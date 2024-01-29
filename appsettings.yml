@@ -36,7 +36,7 @@ Servers:
 
       UpdateType: "Git"
       Updates:
-        BaseUrl: "https://github.com/space-station-14/space-station-14"
+        BaseUrl: "https://github.com/space-wizards/space-station-14"
           #Branch: "default"
       
       TimeoutSeconds: 120
