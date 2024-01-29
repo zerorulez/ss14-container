@@ -27,8 +27,7 @@ RUN dnf install -y git libsodium dotnet-sdk-7.0 vim findutils; \
 	rm -rf /var/cache/*
 
 RUN cd /usr/lib64; ln -sf libsodium.so.*.* libsodium.so; \
-	ln -sf python3 /usr/bin/python; \
-	ln -sf /usr/bin/cc /usr/lib/rpm/redhat/redhat-hardened-cc1
+	ln -sf python3 /usr/bin/python;
 
 RUN useradd watchdog
 
@@ -40,7 +39,6 @@ WORKDIR /home/watchdog/
 
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
 	cd build; \
-	find -iname \*.csproj -exec sed -i -e 's/net6.0/net7.0/' {} \; ; \
 	dotnet publish -c Release --no-self-contained; \
 	mv SS14.Watchdog/bin/Release/net7.0/publish/* ..; \
 	cd ..; \
