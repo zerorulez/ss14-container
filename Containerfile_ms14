@@ -1,0 +1,52 @@
+#    Builds an image for running SS14.Watchdog - the space-station-14 automated server builder and watchdog
+#
+#    Copyright (C) 2023 Raphael Bertoche
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+FROM localhost/watchdog
+
+USER root
+
+RUN dnf update -y; \
+	dnf install -y redhat-rpm-config; \
+	rpm -i --nodeps https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/aarch64/os/Packages/f/fedora-repos-38-1.noarch.rpm \
+			https://download.fedoraproject.org/pub/fedora/linux/releases/38/Everything/aarch64/os/Packages/f/fedora-gpg-keys-38-1.noarch.rpm; \
+		sed -i -e 's/$releasever/39/g' /etc/yum.repos.d/fedora*; \
+		dnf install -y swig ecl; \
+		dnf config-manager --disable updates fedora fedora-cisco-openh264; \
+	rm -rf /var/cache/*
+
+#
+USER watchdog
+
+COPY --chown=watchdog:watchdog --chmod=600 id_rsa /home/watchdog/.ssh/id_rsa
+COPY --chown=watchdog:watchdog --chmod=600 config /home/watchdog/.ssh/config
+
+RUN chmod 700 /home/watchdog/.ssh
+#COPY --chown=watchdog:watchdog start.sh /home/watchdog/start.sh
+
+COPY --chmod=755 start.sh /home/watchdog/start.sh
+CMD /home/watchdog/start.sh
+
+
+#fedora-gpg-keys-39-0.4.noarch.rpm
+# RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
+# 	cd build; \
+# 	find -iname \*.csproj -exec sed -i -e 's/net6.0/net7.0/' {} \; ; \
+# 	dotnet publish -c Release --no-self-contained; \
+# 	mv SS14.Watchdog/bin/Release/net7.0/publish/* ..; \
+# 	cd ..; \
+# 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
+
+#CMD ./SS14.Watchdog
