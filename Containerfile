@@ -23,7 +23,7 @@ RUN microdnf install -y dnf; \
 RUN dnf -y install oracle-epel-release-el9; \
 	rm -rf /var/cache/*
 
-RUN dnf install -y git libsodium dotnet-sdk-7.0 vim findutils; \
+RUN dnf install -y git libsodium dotnet-sdk-8.0 vim findutils; \
 	rm -rf /var/cache/*
 
 RUN cd /usr/lib64; ln -sf libsodium.so.*.* libsodium.so; \
@@ -40,7 +40,7 @@ WORKDIR /home/watchdog/
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
 	cd build; \
 	dotnet publish -c Release --no-self-contained; \
-	mv SS14.Watchdog/bin/Release/net7.0/publish/* ..; \
+	mv SS14.Watchdog/bin/Release/net8.0/publish/* ..; \
 	cd ..; \
 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
 
