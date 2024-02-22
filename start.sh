@@ -2,10 +2,10 @@
 set -x
 
 export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=accept-new -i /home/watchdog/.ssh/id_rsa"
-export TargetFramework=net7.0
+export TargetFramework=net8.0
 #export USE_SYSTEM_SQLITE=1
 
-export DOTNET_FLAGS="-p USE_SYSTEM_SQLITE=1"
+export DOTNET_FLAGS="-p USE_SYSTEM_SQLITE=1 --self-contained"
 
 
 if [ -z "$PLATFORM" ]; then
