@@ -14,21 +14,26 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-FROM localhost/watchdog-ubuntu
+FROM docker.io/library/ubuntu:jammy
 
-USER root
-
-RUN apt update && apt install -y swig ecl unzip make dotnet-runtime-7.0 && \
+RUN apt update && apt install -y git libsodium-dev dotnet-sdk-8.0 vim findutils python3 && \
 	rm -rf /var/cache/*
+
+RUN useradd watchdog
 
 USER watchdog
 
-COPY --chown=watchdog:watchdog --chmod=600 id_rsa /home/watchdog/.ssh/id_rsa
-COPY --chown=watchdog:watchdog --chmod=600 config /home/watchdog/.ssh/config
+WORKDIR /home/watchdog/
 
-#ADD config.toml /home/watchdog/ms14/server_config.toml
+#ADD config.toml /home/watchdog/instances/default/
 
-RUN chmod 700 /home/watchdog/.ssh
+RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
+	cd build; \
+	dotnet publish -c Release --no-self-contained; \
+	mv SS14.Watchdog/bin/Release/net8.0/publish/* ..; \
+	cd ..; \
+	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
 
-COPY --chmod=755 start.sh /home/watchdog/start.sh
-CMD /home/watchdog/start.sh
+ADD appsettings.yml .
+
+CMD ./SS14.Watchdog
