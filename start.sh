@@ -15,12 +15,13 @@ export PACKAGE_BUILD_ARGS="-p linux-$PLATFORM"
 
 git_pull(){
 	git -C src pull
-	git -C src/Resources/Mining pull
 	git -C src submodule update --init --recursive --force
+	git -C src/Resources/Mining pull
 }
 
 git_clone(){
 	git clone --single-branch --depth 1 https://github.com/Partmedia/mining-station-14 src
+	git -C src submodule update --init --recursive --force
 	pushd src/Resources
 	git clone --single-branch --depth 1 ssh://git@github.com/Partmedia/ms14-resources Mining
 	popd
