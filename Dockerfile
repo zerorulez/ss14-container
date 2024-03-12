@@ -19,11 +19,11 @@ FROM docker.io/library/ubuntu:jammy
 RUN apt update && apt install -y git libsodium-dev dotnet-sdk-8.0 vim findutils python3 && \
 	rm -rf /var/cache/*
 
+RUN sudo mkdir ss14 && chmod 777 ss14
+
 RUN useradd watchdog
 
 USER watchdog
-
-RUN mkdir ss14 && chmod 777 ss14
 
 WORKDIR /ss14
 
