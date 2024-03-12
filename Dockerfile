@@ -32,9 +32,10 @@ WORKDIR /ss14
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
 	cd build; \
 	dotnet publish -c Release --no-self-contained; \
-	mv SS14.Watchdog/bin/Release/net8.0/publish/* ..; \
-	cd ..; \
+	cd SS14.Watchdog/bin/Release/net8.0/publish/; \
 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
+
+COPY . /ss14
 
 ADD appsettings.yml .
 
