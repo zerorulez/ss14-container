@@ -23,7 +23,9 @@ RUN useradd watchdog
 
 USER watchdog
 
-WORKDIR /home/watchdog/
+RUN mkdir ss14 && chmod 777 ss14
+
+WORKDIR /ss14
 
 #ADD config.toml /home/watchdog/instances/default/
 
