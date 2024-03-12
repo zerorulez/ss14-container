@@ -34,6 +34,8 @@ RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Wa
 	cd ..; \
 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
 
+VOLUME /home/watchdog
+
 ADD appsettings.yml .
 
 CMD ./SS14.Watchdog
