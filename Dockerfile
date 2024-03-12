@@ -25,8 +25,6 @@ USER watchdog
 
 WORKDIR /home/watchdog/
 
-VOLUME /home/watchdog
-
 #ADD config.toml /home/watchdog/instances/default/
 
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
