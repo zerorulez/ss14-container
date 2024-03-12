@@ -19,23 +19,20 @@ FROM docker.io/library/ubuntu:jammy
 RUN apt update && apt install -y git libsodium-dev dotnet-sdk-8.0 vim findutils python3 && \
 	rm -rf /var/cache/*
 
-RUN mkdir ss14 && chmod 777 ss14
-
 RUN useradd watchdog
 
 USER watchdog
 
-WORKDIR /ss14
+WORKDIR /home/watchdog/
 
 #ADD config.toml /home/watchdog/instances/default/
 
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
 	cd build; \
 	dotnet publish -c Release --no-self-contained; \
-	cd SS14.Watchdog/bin/Release/net8.0/publish/; \
+	mv SS14.Watchdog/bin/Release/net8.0/publish/* ..; \
+	cd ..; \
 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
-
-COPY . /ss14
 
 ADD appsettings.yml .
 
