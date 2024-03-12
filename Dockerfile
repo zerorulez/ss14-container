@@ -25,6 +25,8 @@ USER watchdog
 
 WORKDIR /home/watchdog/
 
+VOLUME /home/watchdog
+
 #ADD config.toml /home/watchdog/instances/default/
 
 RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Watchdog build; \
@@ -33,8 +35,6 @@ RUN git clone --single-branch --depth 1 https://github.com/space-wizards/SS14.Wa
 	mv SS14.Watchdog/bin/Release/net8.0/publish/* ..; \
 	cd ..; \
 	rm -rf build ~/.nuget/ ~/.local/share/NuGet/
-
-VOLUME /home/watchdog
 
 ADD appsettings.yml .
 
